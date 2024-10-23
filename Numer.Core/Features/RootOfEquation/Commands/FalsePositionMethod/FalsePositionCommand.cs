@@ -10,7 +10,7 @@ namespace Numer.Core.Features.RootOfEquation.Commands.FalsePositionMethod {
         public Func<double, double> Function { get; set; }
         public double LowerBound { get; set; }
         public double UpperBound { get; set; }
-        public double Tolerance { get; set; } = 0.000001;
-        public int MaxIterations { get; set; } = 100;
+        public double Tolerance { get; set; }
+        public int MaxIterations { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace Numer.Core.Features.RootOfEquation.Commands.BisectionMethod {
         public double LowerBound { get; set; }
         public double UpperBound { get; set; }
         public double Tolerance { get; set; } = 0.000001;
-        public int MaxIterations { get; set; } = 100;
+        public int MaxIterations { get; set; }
     }
 }

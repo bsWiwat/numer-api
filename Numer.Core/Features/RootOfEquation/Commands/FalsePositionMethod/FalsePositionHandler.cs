@@ -17,10 +17,16 @@ namespace Numer.Core.Features.RootOfEquation.Commands.FalsePositionMethod {
             double error = double.MaxValue;
             int iteration = 0;
 
-            var iterations = new List<BaseIteration>();
+            var iterations = new List<Iteration>();
 
             if (request.Function(xl) * request.Function(xr) >= 0) {
-                throw new ArgumentException("The function must have different signs at the bounds.");
+                return new RootResult {
+                    Status = new Status {
+                        StatusCode = (int)EnumMasterType.MasterType.BadRequest,
+                        StatusName = EnumMasterType.MasterType.BadRequest.ToString(),
+                        Message = "The function must have different signs at the bounds."
+                    }
+                };
             }
 
             while (error > tolerance || iteration < maxIterations) {
@@ -28,7 +34,7 @@ namespace Numer.Core.Features.RootOfEquation.Commands.FalsePositionMethod {
                 double fxm = request.Function(xm);
                 error = Math.Abs(fxm);
 
-                iterations.Add(new BaseIteration {
+                iterations.Add(new Iteration {
                     Index = iteration + 1,
                     X = xm,
                     Y = fxm,
@@ -46,9 +52,15 @@ namespace Numer.Core.Features.RootOfEquation.Commands.FalsePositionMethod {
             }
 
             return new RootResult {
-                Root = xm,
-                Error = error,
-                Iterations = iterations
+                Status = new Status {
+                    StatusCode = (int)EnumMasterType.MasterType.Success,
+                    StatusName = EnumMasterType.MasterType.Success.ToString(),
+                    Message = "Bisection method completed successfully."
+                },
+                Data = new Data {
+                    Result = xm,
+                    Iterations = iterations
+                }
             };
         }
     }
