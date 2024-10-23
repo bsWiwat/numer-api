@@ -8,7 +8,6 @@ using Numer.Core.Features.RootOfEquation.Commands.BisectionMethod;
 using Numer.Core.Features.RootOfEquation.Commands.FalsePositionMethod;
 using Numer.Core.Features.RootOfEquation.Commands.GraphicalMethod;
 using Numer.Core.Models;
-using Numer.Domain;
 using Numer.Domain.Entities;
 
 namespace Numer.API.Controllers {

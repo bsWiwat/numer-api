@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Numer.Domain.Entities {
     public class RootResult {
-        public double Root { get; set; }
-        public double Error { get; set; }
-        public List<BaseIteration> Iterations { get; set; }
+        public Status Status { get; set; }
+        public Data Data { get; set; }
     }
 }
