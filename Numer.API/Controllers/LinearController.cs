@@ -10,6 +10,7 @@ using Numer.Core.Features.Linear.Commands.CholeskyDecomposition;
 using Numer.Core.Features.Linear.Commands.Cramer;
 using Numer.Core.Features.Linear.Commands.GaussElimination;
 using Numer.Core.Features.Linear.Commands.GaussJordan;
+using Numer.Core.Features.Linear.Commands.GaussSeidel;
 using Numer.Core.Features.Linear.Commands.JacobiMethod;
 using Numer.Core.Features.Linear.Commands.LUDecomposition;
 using Numer.Core.Features.Linear.Commands.MatrixInversion;
@@ -89,7 +90,7 @@ namespace Numer.API.Controllers {
             }
         }
 
-        [HttpPost("LUDecomposition")]
+        [HttpPost("luDecomposition")]
         public async Task<ActionResult<DecompositionResult>> SolveLUDecomposition([FromBody] LUDecompositionCommand request) {
             try {
                 var command = new LUDecompositionCommand {
@@ -105,7 +106,7 @@ namespace Numer.API.Controllers {
             }
         }
 
-        [HttpPost("CholeskyDecomposition")]
+        [HttpPost("choleskyDecomposition")]
         public async Task<ActionResult<DecompositionResult>> SolveCholeskyDecomposition([FromBody] CholeskyDecompositionCommand request) {
             try {
                 var command = new CholeskyDecompositionCommand {
@@ -121,10 +122,29 @@ namespace Numer.API.Controllers {
             }
         }
 
-        [HttpPost("Jacobi")]
-        public async Task<ActionResult<JacobiResult>> SolveJacobiIteration([FromBody] JacobiCommand request) {
+        [HttpPost("jacobi")]
+        public async Task<ActionResult<MatrixIterationResult>> SolveJacobiIteration([FromBody] JacobiCommand request) {
             try {
                 var command = new JacobiCommand {
+                    MatrixA = request.MatrixA,
+                    ArrayB = request.ArrayB,
+                    InitialX = request.InitialX,
+                    Tolerance = request.Tolerance,
+                    MaxIterations = request.MaxIterations,
+                };
+
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("gauss-seidel")]
+        public async Task<ActionResult<MatrixIterationResult>> SolveGaussSeidelIteration([FromBody] GaussSeidelCommand request) {
+            try {
+                var command = new GaussSeidelCommand {
                     MatrixA = request.MatrixA,
                     ArrayB = request.ArrayB,
                     InitialX = request.InitialX,
