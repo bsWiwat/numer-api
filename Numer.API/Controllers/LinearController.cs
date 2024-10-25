@@ -10,6 +10,7 @@ using Numer.Core.Features.Linear.Commands.Cramer;
 using Numer.Core.Features.Linear.Commands.GaussElimination;
 using Numer.Core.Features.Linear.Commands.GaussJordan;
 using Numer.Core.Features.Linear.Commands.JacobiMethod;
+using Numer.Core.Features.Linear.Commands.LUDecomposition;
 using Numer.Core.Features.Linear.Commands.MatrixInversion;
 using Numer.Domain.Entities;
 
@@ -75,6 +76,22 @@ namespace Numer.API.Controllers {
         public async Task<ActionResult<MatrixInversionResult>> SolveMatrixInversion([FromBody] MatrixInversionCommand request) {
             try {
                 var command = new MatrixInversionCommand {
+                    MatrixA = request.MatrixA,
+                    ArrayB = request.ArrayB,
+                };
+
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("LUDecomposition")]
+        public async Task<ActionResult<LUDecompositionResult>> SolveLUDecomposition([FromBody] LUDecompositionCommand request) {
+            try {
+                var command = new LUDecompositionCommand {
                     MatrixA = request.MatrixA,
                     ArrayB = request.ArrayB,
                 };
