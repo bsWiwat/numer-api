@@ -6,8 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Numer.Core.Features.Linear.Commands.LUDecomposition {
-    public class LUDecompositionHandler : IRequestHandler<LUDecompositionCommand, LUDecompositionResult> {
-        public async Task<LUDecompositionResult> Handle(LUDecompositionCommand request, CancellationToken cancellationToken) {
+    public class LUDecompositionHandler : IRequestHandler<LUDecompositionCommand, DecompositionResult> {
+        public async Task<DecompositionResult> Handle(LUDecompositionCommand request, CancellationToken cancellationToken) {
             double[][] matrixA = request.MatrixA;
             double[] arrayB = request.ArrayB;
             int n = matrixA.Length;
@@ -63,13 +63,13 @@ namespace Numer.Core.Features.Linear.Commands.LUDecomposition {
                 result[i] /= U[i][i];
             }
 
-            return new LUDecompositionResult {
+            return new DecompositionResult {
                 Status = new Status {
                     StatusCode = (int)EnumMasterType.MasterType.Success,
                     StatusName = EnumMasterType.MasterType.Success.ToString(),
                     Message = "LU decomposition and result computation completed successfully."
                 },
-                Data = new LUData {
+                Data = new DecompositionData {
                     ArrayY = arrayY,
                     MatrixL = L,
                     MatrixU = U,

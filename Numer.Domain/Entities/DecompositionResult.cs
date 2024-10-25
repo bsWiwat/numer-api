@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Numer.Domain.Entities {
-    public class LUDecompositionResult {
+    public class DecompositionResult {
         public Status Status { get; set; }
-        public LUData Data { get; set; }
+        public DecompositionData Data { get; set; }
     }
 }

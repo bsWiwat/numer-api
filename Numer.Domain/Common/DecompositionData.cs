@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Numer.Domain.Common {
-    public class LUData {
+    public class DecompositionData {
         public double[] ArrayY { get; set; }
         public double[][] MatrixL { get; set; }
         public double[][] MatrixU { get; set; }
