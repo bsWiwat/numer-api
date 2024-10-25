@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
-    public class JacobiCommand : IRequest<JacobiResult> {
+    public class JacobiCommand : IRequest<MatrixIterationResult> {
         public double[][] MatrixA { get; set; }
         public double[] ArrayB { get; set;}
         public double[] InitialX { get; set;}

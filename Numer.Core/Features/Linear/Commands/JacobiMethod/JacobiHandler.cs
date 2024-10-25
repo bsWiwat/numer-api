@@ -7,8 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
-    public class JacobiHandler : IRequestHandler<JacobiCommand, JacobiResult> {
-        public Task<JacobiResult> Handle(JacobiCommand request, CancellationToken cancellationToken) {
+    public class JacobiHandler : IRequestHandler<JacobiCommand, MatrixIterationResult> {
+        public Task<MatrixIterationResult> Handle(JacobiCommand request, CancellationToken cancellationToken) {
             double[][] matrixA = request.MatrixA;
             double[] arrayB = request.ArrayB;
             double[] initialX = request.InitialX;
@@ -18,7 +18,7 @@ namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
             double[] previousX = (double[])initialX.Clone();
             double[] x = new double[n];
             double[] errors = new double[n];
-            List<JacobiIteration> iterations = new List<JacobiIteration>();
+            List<MatrixIteration> iterations = new List<MatrixIteration>();
 
             for (int iteration = 0; iteration < request.MaxIterations; iteration++) {
                 double maxError = 0;
@@ -39,7 +39,7 @@ namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
                     maxError = Math.Max(maxError, errors[i]);
                 }
 
-                iterations.Add(new JacobiIteration {
+                iterations.Add(new MatrixIteration {
                     Iteration = iteration + 1,
                     Error = (double[])errors.Clone(),
                     X = (double[])x.Clone()
@@ -52,7 +52,7 @@ namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
                 Array.Copy(x, previousX, n);
             }
 
-            return Task.FromResult(new JacobiResult {
+            return Task.FromResult(new MatrixIterationResult {
                 Status = new Status {
                     StatusCode = (int)EnumMasterType.MasterType.Success,
                     StatusName = EnumMasterType.MasterType.Success.ToString(),
