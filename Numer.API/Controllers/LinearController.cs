@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Numer.Core.Features.Linear.Commands.CholeskyDecomposition;
+using Numer.Core.Features.Linear.Commands.ConjugateGradient;
 using Numer.Core.Features.Linear.Commands.Cramer;
 using Numer.Core.Features.Linear.Commands.GaussElimination;
 using Numer.Core.Features.Linear.Commands.GaussJordan;
@@ -145,6 +145,25 @@ namespace Numer.API.Controllers {
         public async Task<ActionResult<MatrixIterationResult>> SolveGaussSeidelIteration([FromBody] GaussSeidelCommand request) {
             try {
                 var command = new GaussSeidelCommand {
+                    MatrixA = request.MatrixA,
+                    ArrayB = request.ArrayB,
+                    InitialX = request.InitialX,
+                    Tolerance = request.Tolerance,
+                    MaxIterations = request.MaxIterations,
+                };
+
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("conjugate")]
+        public async Task<ActionResult<ConjugateGradientResult>> SolveConjugateGradient([FromBody] ConjugateGradientCommand request) {
+            try {
+                var command = new ConjugateGradientCommand {
                     MatrixA = request.MatrixA,
                     ArrayB = request.ArrayB,
                     InitialX = request.InitialX,
