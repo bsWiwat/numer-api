@@ -24,48 +24,41 @@ namespace Numer.Core.Features.Linear.Commands.GaussElimination {
             List<IterationGauss> iterations = new List<IterationGauss>();
 
             // Forward
-            for (int i = 0; i < n; i++) {
-                if (augmentedMatrix[i][i] == 0) {
-                    for (int c = 1; i + c < n && augmentedMatrix[i + c][i] == 0; c++) { }
-                    // Swap rows
-                    for (int j = 0; j <= n; j++) {
-                        double temp = augmentedMatrix[i][j];
-                        augmentedMatrix[i][j] = augmentedMatrix[i + 1][j];
-                        augmentedMatrix[i + 1][j] = temp;
-                    }
-                }
+            for (int j = 0; j < n; j++) {
+                for (int i = j + 1; i < n; i++) {
+                    if (i > j) {
+                        double c = augmentedMatrix[i][j] / augmentedMatrix[j][j];
+                        iterations.Add(new IterationGauss {
+                            Type = "forward",
+                            I = j,
+                            J = i,
+                            Factor = -c,
+                            Matrix = MatrixHelper.CloneMatrix(augmentedMatrix)
+                        });
 
-                for (int j = i + 1; j < n; j++) {
-                    double factor = -augmentedMatrix[j][i] / augmentedMatrix[i][i];
-                    iterations.Add(new IterationGauss {
-                        Type = "forward",
-                        I = i,
-                        J = j,
-                        Factor = factor,
-                        Matrix = MatrixHelper.CloneMatrix(augmentedMatrix)
-                    });
-
-                    for (int k = i; k <= n; k++) {
-                        augmentedMatrix[j][k] += factor * augmentedMatrix[i][k];
+                        for (int k = j; k <= n; k++) {
+                            augmentedMatrix[i][k] -= c * augmentedMatrix[j][k];
+                        }
                     }
                 }
             }
 
             // Backward
             double[] result = new double[n];
-            for (int i = n - 1; i >= 0; i--) {
-                double sum = augmentedMatrix[i][n];
+            result[n - 1] = augmentedMatrix[n - 1][n] / augmentedMatrix[n - 1][n - 1];
+
+            for (int i = n - 2; i >= 0; i--) {
+                double sum = 0;
                 for (int j = i + 1; j < n; j++) {
-                    sum -= augmentedMatrix[i][j] * result[j];
+                    sum += augmentedMatrix[i][j] * result[j];
                 }
-                double value = sum / augmentedMatrix[i][i];
-                result[i] = value;
+                result[i] = (augmentedMatrix[i][n] - sum) / augmentedMatrix[i][i];
 
                 iterations.Add(new IterationGauss {
                     Type = "backward",
                     I = i,
                     J = i,
-                    Value = value,
+                    Value = result[i],
                     SumIdx = new List<int>(Enumerable.Range(i + 1, n - i - 1))
                 });
             }
