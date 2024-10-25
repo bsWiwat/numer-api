@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
     public class JacobiHandler : IRequestHandler<JacobiCommand, MatrixIterationResult> {
-        public Task<MatrixIterationResult> Handle(JacobiCommand request, CancellationToken cancellationToken) {
+        public async Task<MatrixIterationResult> Handle(JacobiCommand request, CancellationToken cancellationToken) {
             double[][] matrixA = request.MatrixA;
             double[] arrayB = request.ArrayB;
             double[] initialX = request.InitialX;
@@ -52,7 +52,7 @@ namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
                 Array.Copy(x, previousX, n);
             }
 
-            return Task.FromResult(new MatrixIterationResult {
+            return new MatrixIterationResult {
                 Status = new Status {
                     StatusCode = (int)EnumMasterType.MasterType.Success,
                     StatusName = EnumMasterType.MasterType.Success.ToString(),
@@ -60,7 +60,7 @@ namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
                 },
                 Result = x.ToList(),
                 Iterations = iterations
-            });
+            };
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Numer.Core.Features.Linear.Commands.GaussSeidel {
     public class GaussSeidelHandler : IRequestHandler<GaussSeidelCommand, MatrixIterationResult> {
-        public Task<MatrixIterationResult> Handle(GaussSeidelCommand request, CancellationToken cancellationToken) {
+        public async Task<MatrixIterationResult> Handle(GaussSeidelCommand request, CancellationToken cancellationToken) {
             double[][] matrixA = request.MatrixA;
             double[] arrayB = request.ArrayB;
             double[] initialX = request.InitialX;
@@ -53,7 +53,7 @@ namespace Numer.Core.Features.Linear.Commands.GaussSeidel {
                 }
             }
 
-            return Task.FromResult(new MatrixIterationResult {
+            return new MatrixIterationResult {
                 Status = new Status {
                     StatusCode = (int)EnumMasterType.MasterType.Success,
                     StatusName = EnumMasterType.MasterType.Success.ToString(),
@@ -61,7 +61,7 @@ namespace Numer.Core.Features.Linear.Commands.GaussSeidel {
                 },
                 Result = x.ToList(),
                 Iterations = iterations
-            });
+            };
         }
     }
 }
