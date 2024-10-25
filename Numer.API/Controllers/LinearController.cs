@@ -120,5 +120,24 @@ namespace Numer.API.Controllers {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("Jacobi")]
+        public async Task<ActionResult<JacobiResult>> SolveJacobiIteration([FromBody] JacobiCommand request) {
+            try {
+                var command = new JacobiCommand {
+                    MatrixA = request.MatrixA,
+                    ArrayB = request.ArrayB,
+                    InitialX = request.InitialX,
+                    Tolerance = request.Tolerance,
+                    MaxIterations = request.MaxIterations,
+                };
+
+                var result = await _mediator.Send(command);
+                return Ok(result);
+            }
+            catch (Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
