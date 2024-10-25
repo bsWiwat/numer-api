@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Numer.Core.Features.Linear.Commands.Cramer {
     public class CramerCommand : IRequest<MatrixResult> {
-        public double[] ArrayB { get; set; }
         public double[][] MatrixA { get; set; }
+        public double[] ArrayB { get; set; }
     }
 }
