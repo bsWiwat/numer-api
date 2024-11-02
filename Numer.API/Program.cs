@@ -5,37 +5,33 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Numer.Core;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => {
+    options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+});
 
 // Adding MediatR
 builder.Services.AddCoreService();
-
-
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// CORS policy
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
+// Add services to the container for Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-/*
-app.UseExceptionHandler(config => {
-    config.Run(async context => {
-        context.Response.StatusCode = 500;
-        context.Response.ContentType = "text";
-
-        var error = context.Features.Get<IExceptionHandlerFeature>();
-        if (error != null) {
-            await context.Response.WriteAsync("Something wrong.");
-        }
-    });
-});
-*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
@@ -44,6 +40,9 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
+
+// Use the CORS policy
+app.UseCors("AllowAllOrigins");
 
 app.MapControllers();
 
