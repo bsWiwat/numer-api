@@ -58,8 +58,10 @@ namespace Numer.Core.Features.Linear.Commands.JacobiMethod {
                     StatusName = EnumMasterType.MasterType.Success.ToString(),
                     Message = "Computation completed successfully."
                 },
-                Result = x.ToList(),
-                Iterations = iterations
+                Data = new MatrixIterEntity {
+                    Result = x?.ToList() ?? null,
+                    Iterations = iterations
+                }
             };
         }
     }

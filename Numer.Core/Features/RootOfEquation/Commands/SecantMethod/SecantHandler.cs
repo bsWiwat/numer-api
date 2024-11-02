@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace Numer.Core.Features.RootOfEquation.Commands.SecantMethod {
     public class SecantHandler : IRequestHandler<SecantCommand, RootResult> {
         public async Task<RootResult> Handle(SecantCommand request, CancellationToken cancellationToken) {
-            double xOld = request.X0;
-            double xNew = request.X1;
+            double xOld = request.LowerBound;
+            double xNew = request.UpperBound;
             double tolerance = request.Tolerance;
             int maxIterations = request.MaxIterations;
             double error = double.MaxValue;

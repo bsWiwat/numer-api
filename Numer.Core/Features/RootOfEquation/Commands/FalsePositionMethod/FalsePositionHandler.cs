@@ -55,7 +55,7 @@ namespace Numer.Core.Features.RootOfEquation.Commands.FalsePositionMethod {
                 Status = new Status {
                     StatusCode = (int)EnumMasterType.MasterType.Success,
                     StatusName = EnumMasterType.MasterType.Success.ToString(),
-                    Message = "Bisection method completed successfully."
+                    Message = "Method completed successfully."
                 },
                 Data = new Data {
                     Result = xm,

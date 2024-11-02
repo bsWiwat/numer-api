@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 namespace Numer.Domain.Entities {
     public class MatrixIterationResult {
         public Status Status { get; set; }
+        public MatrixIterEntity Data { get; set; }
+    }
+
+    public class MatrixIterEntity {
         public List<double> Result { get; set; }
         public List<MatrixIteration> Iterations { get; set; }
     }

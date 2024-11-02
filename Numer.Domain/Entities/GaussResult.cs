@@ -16,7 +16,7 @@ namespace Numer.Domain.Entities {
         public double[] Result { get; set; }
     }
 
-        public class IterationGauss {
+    public class IterationGauss {
         public string Type { get; set; }
         public int I { get; set; }
         public int J { get; set; }
