@@ -30,7 +30,7 @@ namespace Numer.Tests
 
             // Assert
             Assert.Equal((int)EnumMasterType.MasterType.Success, result.Status.StatusCode);
-            Assert.InRange(result.Data.Result, 1.4142, 1.4143); // Approximate root is sqrt(2)
+            Assert.InRange(result.Data.Result, 1.4142, 1.4143);
             Assert.True(result.Data.Iterations.Count > 0);
             Assert.Equal("Bisection method completed successfully.", result.Status.Message);
         }
